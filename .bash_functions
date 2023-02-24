@@ -110,7 +110,7 @@ created() {
     # Give permissions of mount location to user.
     sudo chown "$USER:$USER" "$DISKDEST"
 
-    closed "$DISKNAME" > /dev/null
+    closed --name "$DISKNAME" > /dev/null
     echo "Disk $DISKNAME succesfully created. Open it with opend."
 }
 
