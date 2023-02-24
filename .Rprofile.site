@@ -1,0 +1,17 @@
+# Set default CRAN mirror.
+options(repos = c(CRAN = "https://mirror.csclub.uwaterloo.ca/CRAN/"))
+
+# Never save R history.
+utils::assignInNamespace("q", ns = "base", value = function(
+    save    = "no",
+    status  = 0,
+    runLast = TRUE) {
+        .Internal(quit(save, status, runLast))
+})
+
+utils::assignInNamespace("quit", ns = "base", value = function(
+    save    = "no",
+    status  = 0,
+    runLast = TRUE) {
+        .Internal(quit(save, status, runLast))
+ })

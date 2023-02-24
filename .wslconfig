@@ -1,0 +1,14 @@
+# Configuration file for Windows Subsystem for Linux 2.
+# Source: https://learn.microsoft.com/en-us/windows/wsl/wsl-config.
+
+[wsl2]
+    memory = 32GB
+    processors = 20
+    localhostForwarding = true    # bind WSL2 localhost to Windows localhost.
+    swap = 16GB                   # do note use swap storage space.
+    swapFile = W:\\swap.vhdx      # Store swap file with distros.
+    pageReporting = false         # WSL2 keeps all allocated memory and releases none.
+    guiApplications = true        # turn on support for GUI applications (WSLg).
+    debugConsole = false          # turn off output console showing contents of dmesg at boot.
+    nestedVirtualization = false  # disables nested virtualization.
+    vmIdleTimeout = 60000         # number of milliseconds that a VM is idle, before it is shut down.

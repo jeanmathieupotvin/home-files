@@ -1,0 +1,16 @@
+[user]
+    name = Jean-Mathieu Potvin
+    email = jm@potvin.xyz
+    signingKey = A33E53429798B393!
+[init]
+    defaultBranch = main
+[credential]
+    helper = cache
+[commit]
+    gpgSign = true
+[core]
+    eol = lf  # optional, can be useful on Windows
+#   autocrlf = false       # optional, can be useful on Windows
+# [http]
+#	sslVerify = true       # optional, can be useful on Windows
+#   sslBackend = schannel  # optional, can be useful on Windows

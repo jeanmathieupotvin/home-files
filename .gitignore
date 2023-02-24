@@ -1,0 +1,23 @@
+# Ignore everything in ~.
+/*
+
+# Do not ignore bash files.
+!.bashrc
+!.bash_aliases
+!.bash_functions
+!.bash_logout
+!.bash_profile
+
+# Do not ignore profiles.
+!.nanorc
+!.Rprofile.site
+
+# Do not ignore configration files.
+!.gitconfig
+!.gitignore
+!.hushlogin
+!.wslconfig
+!.wsl.conf
+
+# Do not ignore helper scripts.
+!scripts/
