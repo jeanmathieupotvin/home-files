@@ -1,3 +1,6 @@
+# ~/.gitignore: read by git(1).
+# List files in home folder to be ignored when tracking dot files.
+
 # Ignore everything in ~.
 /*
 

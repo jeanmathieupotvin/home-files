@@ -1,2 +1,5 @@
+# ~/.nanorc: executed by nano(1).
+# Custom settings for nano, a text editor.
+
 set linenumbers
 set guidestripe 80

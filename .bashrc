@@ -1,4 +1,4 @@
-# Executed by bash(1) for non-login shells and subshells.
+# ~/.bashrc: executed by bash(1) for non-login shells and subshells.
 # Set all default and custom options.
 
 

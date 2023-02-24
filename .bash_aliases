@@ -1,3 +1,6 @@
+# ~/.bash_aliases: executed by bash(1) for all shells (via .bashrc).
+# Collection of useful aliases.
+
 alias ll="ls -alF"
 alias ls="ls --color=auto"
 alias dir="dir --color=auto"

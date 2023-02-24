@@ -1,4 +1,4 @@
-# Executed by bash(1) for all shells (via .bash_profile and .bashrc).
+# ~/.bash_functions: executed by bash(1) for all shells (via .bashrc).
 # Collection of useful utility functions.
 
 
@@ -233,16 +233,19 @@ closed() {
 
     cd ~
 
+    # Unmount device.
     sudo umount "$DISKDEST" || {
         echo "Disk could not be unmounted."
         return 1
     }
 
+    # Close and encrypt loopback device.
     sudo cryptsetup close loop0 || {
         echo "Disk could not be encrypted."
         return 1
     }
 
+    # Remove loopback device.
     sudo losetup -d /dev/loop0 || {
         echo "Loopback device could not be removed."
         return 1

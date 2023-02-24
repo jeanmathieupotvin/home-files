@@ -1,9 +1,11 @@
-# Configuration file for Windows Subsystem for Linux 2.
-# Source: https://learn.microsoft.com/en-us/windows/wsl/wsl-config.
+# ~/.wslconfig: processed by WSL2 (Windows Subsystem for Linux 2) at startup.
+# Global settings for all distributions. Must be stored in C:\Users\<user>.
+# Kept in ~ for convenience.
+# Source: https://learn.microsoft.com/en-us/windows/wsl/wsl-config#wslconfig.
 
 [wsl2]
-    memory = 32GB
-    processors = 20
+    memory = 32GB                 # use at most half of available RAM
+    processors = 20               # use all logical cores of my Core-i9 12900HK
     localhostForwarding = true    # bind WSL2 localhost to Windows localhost.
     swap = 16GB                   # do note use swap storage space.
     swapFile = W:\\swap.vhdx      # Store swap file with distros.

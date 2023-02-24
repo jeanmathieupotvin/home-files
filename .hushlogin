@@ -1,0 +1,2 @@
+# ~/.hushlogin: read by WSL2 (Windows Subsystem for Linux 2).
+# Suppress daily welcome messages when logging in for the first time.

@@ -1,7 +1,16 @@
-# Set default CRAN mirror.
+# ~/.Rprofile.site: read by R as part of its standard startup process.
+# Contains miscellenaous options and helper functions.
+
+
+# CRAN mirror ------------------------------------------------------------------
+
+
 options(repos = c(CRAN = "https://mirror.csclub.uwaterloo.ca/CRAN/"))
 
-# Never save R history.
+
+# Never save R history when quitting -------------------------------------------
+
+
 utils::assignInNamespace("q", ns = "base", value = function(
     save    = "no",
     status  = 0,

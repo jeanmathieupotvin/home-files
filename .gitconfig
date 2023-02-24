@@ -1,3 +1,6 @@
+# ~/.gitconfig: read by git(1).
+# Set global options for Git.
+
 [user]
     name = Jean-Mathieu Potvin
     email = jm@potvin.xyz
@@ -9,8 +12,8 @@
 [commit]
     gpgSign = true
 [core]
-    eol = lf  # optional, can be useful on Windows
-#   autocrlf = false       # optional, can be useful on Windows
+    eol = lf               # optional, but safer in cross-compatible projects
+#   autocrlf = false       # can be useful on Windows
 # [http]
-#	sslVerify = true       # optional, can be useful on Windows
-#   sslBackend = schannel  # optional, can be useful on Windows
+#	sslVerify = true       # can be useful on Windows
+#   sslBackend = schannel  # can be useful on Windows
