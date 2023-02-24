@@ -1,25 +1,9 @@
-# set-new-gpg-key
+# ~/new-gpg-key.sh: executed manually by user.
 
-
-# Description
 # Create a new GPG key and manipulate it.
-
-
-# Author
-# Jean-Mathieu Potvin (jm@potvin.xyz)
-
-
-# Sources
-# Host: docs.github.com
-# Path:
-#   1. /en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys
-#   2. /en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key
-
-
-# Tips -------------------------------------------------------------------------
-
-
-# 1. You can add a photo (and manipulate your key) easily in Seahorse.
+# Sources:
+#  - docs.github.com/en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys
+#  - docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key
 
 
 # Manipulate existing keys -----------------------------------------------------

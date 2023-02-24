@@ -1,22 +1,8 @@
-# set-auto-mount-points
+# ~/auto-mount-points.sh: executed manually by user.
 
-
-# Description
-# Follow instructions below to auto-mount partitions in custom
-# folders. By doing so, they become always accessible via these
-# folders, and are mounted automatically when computer is booted.
-
-
-# Author
-# Jean-Mathieu Potvin (jm@potvin.xyz)
-
-
-# Sources
-# Host: www.techrepublic.com
-# Path: /article/how-to-properly-automount-a-drive-in-ubuntu-linux
-
-
-# Instructions -----------------------------------------------------------------
+# Auto-mount partitions in custom folders when computer is booted.
+# Sources:
+#  - techrepublic.com/article/how-to-properly-automount-a-drive-in-ubuntu-linux
 
 
 # List all mountable partitions.
