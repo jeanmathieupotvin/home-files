@@ -5,7 +5,7 @@
 # Create, open, close, and back up LUKS encrypted disk images files ------------
 
 
-# Functions creatd(), opend(), and close() are an attempt to automate steps
+# Functions creatd(), opend(), and closed() are an attempt to automate steps
 # of sections Encrypting WSL2 disks of Guide 2 WSL written by Tom Christie.
 # See https://www.guide2wsl.com/luks/ for more information. All credits goes
 # to him.
