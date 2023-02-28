@@ -26,7 +26,7 @@ created() {
         echo " -n, --name  name of the disk file"
         echo " -s, --size  desired size of the disk file in GB"
         echo ""
-        echo "See related commands opend and closed."
+        echo "See related commands opend, closed, and backd."
         return 1
     fi
 
@@ -127,7 +127,7 @@ opend() {
         echo "Arguments:"
         echo " -n, --name  name of the disk file"
         echo ""
-        echo "See related commands created and closed."
+        echo "See related commands created, closed, and backd."
         return 1
     fi
 
@@ -202,7 +202,7 @@ closed() {
         echo "Arguments:"
         echo " -n, --name  name of the disk file"
         echo ""
-        echo "See related commands created and closed."
+        echo "See related commands created, closed, and backd."
         return 1
     fi
 
@@ -252,4 +252,53 @@ closed() {
     }
 
     echo "Disk $DISKNAME succesfully closed."
+}
+
+backd() {
+    if [[ ! $# -eq 2 ]]; then
+        echo "Syntax: backd [--name <string>]"
+        echo ""
+        echo "Back up an EXT4 disk image file with XZ."
+        echo "Disks must be stored in $DISKDIR."
+        echo ""
+        echo "Arguments:"
+        echo " -n, --name  name of the disk file"
+        echo ""
+        echo "See related commands created, opend, and closed."
+        return 1
+    fi
+
+    # Parse arguments.
+    # Source: https://stackoverflow.com/a/14203146.
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -n|--name)
+            declare -l DISKNAME="$2"
+            shift # go past argument
+            shift # go past value
+            ;;
+            -*|--*)
+            echo "Unknown argument $1."
+            return 1
+            ;;
+        esac
+    done
+
+    # Check if all variables (arguments) are set.
+    # Source: https://stackoverflow.com/a/13864829
+    if [[ -z ${DISKNAME+x} ]]; then
+        echo "Argument --name is required."
+        return 1
+    fi
+
+    declare -l DISKPATH="$DISKDIR/$DISKNAME.img"
+
+    if [[ ! -f "$DISKPATH" ]]; then
+       echo "Disk $DISKPATH does not exist. Exiting."
+       return 1
+    fi
+
+    # Compress image with XZ. Maximize compression.
+    xz --compress --keep --format=xz --check=sha256 -9 --extreme --threads=0 --verbose "$DISKPATH"
+    echo "Disk $DISKNAME succesfully backed up. See $DISKPATH.xz."
 }
