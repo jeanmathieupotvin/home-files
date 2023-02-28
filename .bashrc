@@ -9,14 +9,14 @@ case $- in
 esac
 
 
-# Constants -------------------------------------------------------------------
+# Constants --------------------------------------------------------------------
 
 
 # Set GPG prompt to enter passphrase on WSL2.
 export GPG_TTY=$(tty)
 
 
-# Default settings ------------------------------------------------------------
+# Default settings -------------------------------------------------------------
 
 
 # Check the window size after each command and,
@@ -27,7 +27,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 
-# Default prompt --------------------------------------------------------------
+# Default prompt ---------------------------------------------------------------
 
 
 # Set variable identifying the chroot
@@ -48,7 +48,7 @@ fi
 unset color_prompt
 
 
-# Add further colors ----------------------------------------------------------
+# Add further colors -----------------------------------------------------------
 
 
 # Add colors to ls outputs.
@@ -60,7 +60,7 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 
-# Custom settings -------------------------------------------------------------
+# Custom settings --------------------------------------------------------------
 
 
 # Always use aliases file.
@@ -81,7 +81,7 @@ HISTSIZE=10     # Max number of lines that can be stored in memory.
 HISTFILESIZE=5  # Max number of lines that can be written to .bash_history.
 
 
-# Load custom functions ------------------------------------------------------
+# Load custom functions --------------------------------------------------------
 
 
 if [ -f ~/.bash_functions ]; then
