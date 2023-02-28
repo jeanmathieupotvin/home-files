@@ -2,7 +2,7 @@
 # Collection of useful utility functions.
 
 
-# Create, open, and close LUKS encrypted disk images files ---------------------
+# Create, open, close, and back up LUKS encrypted disk images files ------------
 
 
 # Functions creatd(), opend(), and close() are an attempt to automate steps
@@ -11,8 +11,9 @@
 # to him.
 
 
-declare -l DISKDIR=~/disks
-declare -l DISKMNT=~/projects
+declare -l DISKDIR=~/enc
+declare -l DISKMNT=~/dec
+
 
 created() {
     if [[ ! $# -eq 4 ]]; then
@@ -24,7 +25,7 @@ created() {
         echo ""
         echo "Arguments:"
         echo " -n, --name  name of the disk file"
-        echo " -s, --size  desired size of the disk file in GB"
+        echo " -s, --size  desired size of the disk file in MB (20 MB minimum)"
         echo ""
         echo "See related commands opend, closed, and backd."
         return 1
@@ -58,9 +59,16 @@ created() {
         return 1
     fi
 
+    if [[ $DISKSIZE -lt 20 ]]; then
+        echo "Size must be greater than 20 MB to allocate enough space for LUKS header."
+        return 1
+    fi
+
+    # DISKBLOCKS is equal to SIZE_IN_MB * (1024 KB/MB) / (4 KB/BLOCK)
+    # because EXT4 filesystems uses blocks of size 4KB.
     declare -l DISKPATH="$DISKDIR/$DISKNAME.img"
     declare -l DISKDEST="$DISKMNT/$DISKNAME"
-    declare -i DISKBLOCKS=$DISKSIZE*1024*1024/4
+    declare -i DISKBLOCKS=$DISKSIZE*1024/4
 
     # Create mount directory if it does not exist.
     if [[ ! -d "$DISKDEST" ]]; then
@@ -68,7 +76,7 @@ created() {
         mkdir "$DISKDEST"
     fi
 
-    echo "Creating disk $DISKNAME of $DISKSIZE GB ($DISKBLOCKS blocks)."
+    echo "Creating disk $DISKNAME of $DISKSIZE MB ($DISKBLOCKS blocks)."
 
     # Create disk image file.
     dd if=/dev/zero of="$DISKPATH" bs=4k count=$DISKBLOCKS
