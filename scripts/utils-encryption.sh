@@ -7,10 +7,12 @@
 
 # Functions creatd(), opend(), and closed() are an attempt to automate and
 # generalize steps of sections Encrypting WSL2 disks of Guide 2 WSL written
-# by Tom Christie (https://www.guide2wsl.com/luks/). Multiple disks can be
-# used simultaneously and mapping is fully automated. There is no need to
-# know which loop devices are available or not. Features are also safer by
-# design.
+# by Tom Christie (https://www.guide2wsl.com/luks/).
+
+# Multiple disks can be used simultaneously. Mapping is fully automated. There
+# is no need to know which loop devices are available or not. Features are also
+# safer by design. You can set an alias to list opened disks:
+# alias listd="losetup -a".
 
 
 # Globals ----------------------------------------------------------------------
@@ -331,7 +333,7 @@ backd() {
 
     declare -l todayDate=$(date +"%Y-%m-%d")
     declare -l diskImagePath="$diskImagesMainDir$diskName.img"
-    declare -l diskBackupPath="$diskImagesMainDir$diskName-$todayDate.img"
+    declare -l diskBackupPath="$diskImagesMainDir$diskName-$todayDate.img.xz"
 
     if [[ ! -f "$diskImagePath" ]]; then
        echo "Disk $diskImagePath does not exist. Exiting."
@@ -339,6 +341,8 @@ backd() {
     fi
 
     # Compress image with XZ. Maximize compression.
-    xz --compress --keep --format=xz --check=sha256 -9 --extreme --threads=0 --verbose "$diskBackupPath"
+    # By default, XZ reuses file names and appends .xz to them.
+    xz --compress --keep --format=xz --check=sha256 -9 --extreme --threads=0 --verbose "$diskImagePath"
+    mv "$diskImagePath.xz" "$diskBackupPath"
     echo "Disk $diskName succesfully backed up to $diskBackupPath."
 }
