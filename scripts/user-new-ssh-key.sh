@@ -1,6 +1,6 @@
-# ~/new-ssh-key.sh: executed manually by user.
-
+# ~/user-new-ssh-key.sh: executed manually by user.
 # Create a new SSH key, add it to the agent, and manipulate it.
+
 # Sources:
 #  - docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys
 #  - docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent

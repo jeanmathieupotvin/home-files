@@ -1,6 +1,6 @@
-# ~/new-gpg-key.sh: executed manually by user.
-
+# ~/user-new-gpg-key.sh: executed manually by user.
 # Create a new GPG key and manipulate it.
+
 # Sources:
 #  - docs.github.com/en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys
 #  - docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key

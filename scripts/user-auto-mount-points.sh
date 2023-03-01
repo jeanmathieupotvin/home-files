@@ -1,6 +1,6 @@
-# ~/auto-mount-points.sh: executed manually by user.
-
+# ~/user-auto-mount-points.sh: executed manually by user.
 # Auto-mount partitions in custom folders when computer is booted.
+
 # Sources:
 #  - techrepublic.com/article/how-to-properly-automount-a-drive-in-ubuntu-linux
 
