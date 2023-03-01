@@ -4,6 +4,10 @@
 # Ignore everything in ~.
 /*
 
+# Do not ignore important symbolic links.
+!.ssh
+!.gnupg
+
 # Do not ignore bash files.
 !.bashrc
 !.bash_aliases
