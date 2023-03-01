@@ -1,4 +1,4 @@
-# ~/scripts/disks.sh: executed by bash(1) for all shells (via .bash_functions).
+# ~/scripts/utils-encryption.sh: executed by bash(1) for all shells (via .bash_functions).
 # Manipulate (create, open, close, and back up) encrypted disk images files.
 
 
