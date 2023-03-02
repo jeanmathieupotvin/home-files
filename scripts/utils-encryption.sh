@@ -26,16 +26,19 @@
 
 
 # Examples of standard variables used below.
-#   - diskImagesMainDir=~/enc/
-#   - diskMountMainDir=~/dec/
-#   - diskBackupRemoteName=gdrive:
-#   - diskBackupRemoteMainDir=Backups/luks/
 #   - diskName=test
 #   - diskSizeMb=20
+#   - diskBlocksCount=5120
+#   - diskImagesMainDir=~/enc/
+#   - diskMountMainDir=~/dec/
 #   - diskImagePath=~/enc/test.img
 #   - diskMountDir=~/dec/test/
-#   - diskBlocksCount=5120
 #   - diskLoopDevicePath=/dev/loop0
+#   - diskBackupName=test-2023-01-01.img.xz
+#   - diskBackupPath=~/enc/test-2023-01-01.img.xz
+#   - diskBackupRemoteName=gdrive:
+#   - diskBackupRemoteMainDir=Backups/luks/
+#   - diskBackupRemotePath=gdrive:Backups/luks/test-2023-01-01.img.xz
 
 
 declare -l diskImagesMainDir=~/enc/
@@ -356,6 +359,7 @@ backd() {
     declare -l diskImagePath="$diskImagesMainDir$diskName.img"
     declare -l diskBackupName="$diskName-$todayDate.img.xz"
     declare -l diskBackupPath="$diskImagesMainDir$diskBackupName"
+    declare -l diskBackupRemotePath="$diskBackupRemoteName$diskBackupRemoteMainDir$diskBackupName"
 
     if [[ ! -f "$diskImagePath" ]]; then
        echo "Disk $diskImagePath does not exist. Exiting."
@@ -370,7 +374,7 @@ backd() {
 
     # Push backup to remote using rclone.
     if [[ -z ${localFlag+x} && $(command -v rclone) ]]; then
-        rclone moveto "$diskBackupPath" "$diskBackupRemoteName$diskBackupRemoteMainDir$diskBackupName" --progress
+        rclone moveto "$diskBackupPath" "$diskBackupRemotePath" --progress
         echo "Disk $diskName succesfully pushed up to Google Drive ($diskBackupPath was removed)."
     fi
 }
