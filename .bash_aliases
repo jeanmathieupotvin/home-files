@@ -10,4 +10,8 @@ alias egrep="egrep --color=auto"
 alias R="R --no-save"
 alias listd="find $diskImagesMainDir -maxdepth 1 -mindepth 1"
 alias listod="losetup -a"
-alias link-keys="opend keys;ln -s $diskMountMainDir/keys/.ssh .ssh;ln -s $diskMountMainDir/keys/.gnupg .gnupg;"
+alias link-keys='(
+    ln -s "$diskMountMainDir/keys/.ssh" .ssh
+    ln -s "$diskMountMainDir/keys/.gnupg" .gnupg
+)'
+alias link-rclone='ln -s "$diskMountMainDir/keys/.config/rclone" ~/.config/rclone'

@@ -14,8 +14,12 @@
 # safer by design. You can set the following aliases to list all disks and
 # those that are opened:
 #
-# alias listd="find $diskImagesMainDir -maxdepth 1 -mindepth 1"
-# alias listod="losetup -a"
+#  alias listd="find $diskImagesMainDir -maxdepth 1 -mindepth 1"
+#  alias listod="losetup -a"
+
+# Function backd() pushes backups to a cloud remote via rclone by default. Use
+# flag --local to create a local backup in $diskImagesMainDir. Else, set global
+# variables $diskBackupRemoteName and $diskBackupRemoteMainDir below.
 
 
 # Globals ----------------------------------------------------------------------
@@ -24,6 +28,8 @@
 # Examples of standard variables used below.
 #   - diskImagesMainDir=~/enc/
 #   - diskMountMainDir=~/dec/
+#   - diskBackupRemoteName=gdrive:
+#   - diskBackupRemoteMainDir=Backups/luks/
 #   - diskName=test
 #   - diskSizeMb=20
 #   - diskImagePath=~/enc/test.img
@@ -34,14 +40,16 @@
 
 declare -l diskImagesMainDir=~/enc/
 declare -l diskMountMainDir=~/dec/
+declare -l diskBackupRemoteName=gdrive:
+declare -l diskBackupRemoteMainDir=Backups/luks/
 
 
 # Functions --------------------------------------------------------------------
 
 
 created() {
-    if [[ ! $# -eq 4 ]]; then
-        echo "Syntax: created [--name <string>] [--size <integer>]"
+    if [[ $# -eq 0 ]]; then
+        echo "Syntax: created --name <string> --size <integer>"
         echo ""
         echo "Create an LUKS2 encrypted EXT4 disk image file."
         echo "Images are stored in $diskImagesMainDir."
@@ -157,8 +165,8 @@ created() {
 }
 
 opend() {
-    if [[ ! $# -eq 2 ]]; then
-        echo "Syntax: opend [--name <string>]"
+    if [[ $# -eq 0 ]]; then
+        echo "Syntax: opend --name <string>"
         echo ""
         echo "Set, decrypt, and mount an encrypted EXT4 disk image file."
         echo "Images must be stored in $diskImagesMainDir."
@@ -233,8 +241,8 @@ opend() {
 }
 
 closed() {
-    if [[ ! $# -eq 2 ]]; then
-        echo "Syntax: closed [--name <string>]"
+    if [[ $# -eq 0 ]]; then
+        echo "Syntax: closed --name <string>"
         echo ""
         echo "Unmount, close, and remove an encrypted EXT4 disk image file set as a loop device."
         echo "Disks must be mounted in $diskMountMainDir."
@@ -298,16 +306,22 @@ closed() {
 }
 
 backd() {
-    if [[ ! $# -eq 2 ]]; then
-        echo "Syntax: backd [--name <string>]"
+    if [[ $# -eq 0 ]]; then
+        echo "Syntax: backd [--local] --name <string>"
         echo ""
         echo "Back up an EXT4 disk image file with XZ."
+        echo "Push it to "$diskBackupRemoteName$diskBackupRemoteMainDir" via rclone."
         echo "Disks must be stored in $diskImagesMainDir."
         echo ""
         echo "Arguments:"
-        echo " -n, --name  name of the disk file"
+        echo " -n, --name   name of the disk file"
+        echo " -l, --local  keep local back up and do not push it to $diskBackupRemoteName with rclone"
         echo ""
         echo "See related commands created, opend, and closed."
+        echo ""
+        echo "Tips:"
+        echo " - To back up a disk containing an rclone profile,"
+        echo "   close it first. Then, reopen it and call backd."
         return 1
     fi
 
@@ -319,6 +333,10 @@ backd() {
             declare -l diskName="$2"
             shift # go past argument
             shift # go past value
+            ;;
+            -l|--local)
+            declare -l localFlag=true
+            shift # go past argument
             ;;
             -*|--*)
             echo "Unknown argument $1."
@@ -336,7 +354,8 @@ backd() {
 
     declare -l todayDate=$(date +"%Y-%m-%d")
     declare -l diskImagePath="$diskImagesMainDir$diskName.img"
-    declare -l diskBackupPath="$diskImagesMainDir$diskName-$todayDate.img.xz"
+    declare -l diskBackupName="$diskName-$todayDate.img.xz"
+    declare -l diskBackupPath="$diskImagesMainDir$diskBackupName"
 
     if [[ ! -f "$diskImagePath" ]]; then
        echo "Disk $diskImagePath does not exist. Exiting."
@@ -348,4 +367,10 @@ backd() {
     xz --compress --keep --format=xz --check=sha256 -9 --extreme --threads=0 --verbose "$diskImagePath"
     mv "$diskImagePath.xz" "$diskBackupPath"
     echo "Disk $diskName succesfully backed up to $diskBackupPath."
+
+    # Push backup to remote using rclone.
+    if [[ -z ${localFlag+x} && $(command -v rclone) ]]; then
+        rclone moveto "$diskBackupPath" "$diskBackupRemoteName$diskBackupRemoteMainDir$diskBackupName" --progress
+        echo "Disk $diskName succesfully pushed up to Google Drive ($diskBackupPath was removed)."
+    fi
 }
