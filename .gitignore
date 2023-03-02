@@ -1,12 +1,17 @@
 # ~/.gitignore: read by git(1).
 # List files in home folder to be ignored when tracking dot files.
 
-# Ignore everything in ~.
+# Ignore everything by default.
 /*
+
+# Do not ignore some files and folders in .config (negates /* above).
+!/.config
+.config/*
 
 # Do not ignore important symbolic links.
 !.ssh
 !.gnupg
+!.config/rclone
 
 # Do not ignore bash files.
 !.bashrc
