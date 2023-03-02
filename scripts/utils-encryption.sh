@@ -14,7 +14,7 @@
 # safer by design. You can set the following aliases to list all disks and
 # those that are opened:
 #
-# alias listd="ls enc | cat"
+# alias listd="find $diskImagesMainDir -maxdepth 1 -mindepth 1"
 # alias listod="losetup -a"
 
 
