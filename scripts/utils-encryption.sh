@@ -10,9 +10,12 @@
 # by Tom Christie (https://www.guide2wsl.com/luks/).
 
 # Multiple disks can be used simultaneously. Mapping is fully automated. There
-# is no need to know which loop devices are available or not. Features are also
-# safer by design. You can set an alias to list opened disks:
-# alias listd="losetup -a".
+# is no need to know which loop devices are available or not. Features are
+# safer by design. You can set the following aliases to list all disks and
+# those that are opened:
+#
+# alias listd="ls enc | cat"
+# alias listod="losetup -a"
 
 
 # Globals ----------------------------------------------------------------------
