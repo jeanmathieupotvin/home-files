@@ -63,27 +63,23 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # Custom settings --------------------------------------------------------------
 
 
-# Always use aliases file.
-# Use standard ~/.bash_aliases file and load it.
+# Load functions.
+if [ -f ~/.bash_functions ]; then
+    . ~/.bash_functions
+fi
+
+# Load aliases.
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# Always use home directory.
+# Set working directory to home.
 # Use the home directory if a new bash shell spawns in a /mnt/* directory.
 echo "${PWD}" | grep -q '^/mnt/' && cd ~
 
-# Disable bash history entirely and permanently (JMP).
+# Dramatically limit bash history for security purposes.
 shopt -s histappend
 
 HISTCONTROL=ignoredups:ignorespace
-HISTSIZE=10     # Max number of lines that can be stored in memory.
-HISTFILESIZE=5  # Max number of lines that can be written to .bash_history.
-
-
-# Load custom functions --------------------------------------------------------
-
-
-if [ -f ~/.bash_functions ]; then
-    . ~/.bash_functions
-fi
+HISTSIZE=10     # Max number of lines stored in memory.
+HISTFILESIZE=5  # Max number of lines written to .bash_history.
