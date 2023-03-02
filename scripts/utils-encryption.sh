@@ -41,10 +41,10 @@
 #   - diskBackupRemotePath=gdrive:Backups/luks/test-2023-01-01.img.xz
 
 
-declare -l diskImagesMainDir=~/enc/
-declare -l diskMountMainDir=~/dec/
-declare -l diskBackupRemoteName=gdrive:
-declare -l diskBackupRemoteMainDir=Backups/luks/
+declare diskImagesMainDir=~/enc/
+declare diskMountMainDir=~/dec/
+declare diskBackupRemoteName=gdrive:
+declare diskBackupRemoteMainDir=Backups/luks/
 
 
 # Functions --------------------------------------------------------------------
@@ -71,7 +71,7 @@ created() {
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare -l diskName="$2"
+            declare diskName="$2"
             shift # go past argument
             shift # go past value
             ;;
@@ -101,8 +101,8 @@ created() {
 
     # Number of blocks is equal to SIZE_IN_MB * (1024 KB/MB) / (4 KB/BLOCK).
     # This is because EXT4 filesystems typically uses blocks of size 4KB.
-    declare -l diskImagePath="$diskImagesMainDir$diskName.img"
-    declare -l diskMountDir="$diskMountMainDir$diskName"
+    declare diskImagePath="$diskImagesMainDir$diskName.img"
+    declare diskMountDir="$diskMountMainDir$diskName"
     declare -i diskBlocksCount="$diskSizeMb"*1024/4
 
     # Create future mount directory if it does not exist.
@@ -118,12 +118,12 @@ created() {
     # Set the loopback device.
     # Find next available one and record both its path and its name.
     echo "Setting loopback device."
-    declare -l diskLoopDevicePath=$(sudo losetup --show --find "$diskImagePath") || {
+    declare diskLoopDevicePath=$(sudo losetup --show --find "$diskImagePath") || {
         echo "Loopback device could not be set."
         return 1
     }
 
-    declare -l diskLoopDeviceName=$(basename "$diskLoopDevicePath")
+    declare diskLoopDeviceName=$(basename "$diskLoopDevicePath")
     echo "Using loopback device $diskLoopDeviceName ($diskLoopDevicePath)."
 
     # Initialize a LUKS partition on device and set initial passphrase.
@@ -187,7 +187,7 @@ opend() {
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare -l diskName="$2"
+            declare diskName="$2"
             shift # go past argument
             shift # go past value
             ;;
@@ -205,8 +205,8 @@ opend() {
         return 1
     fi
 
-    declare -l diskImagePath="$diskImagesMainDir$diskName.img"
-    declare -l diskMountDir="$diskMountMainDir$diskName"
+    declare diskImagePath="$diskImagesMainDir$diskName.img"
+    declare diskMountDir="$diskMountMainDir$diskName"
 
     # We assume $diskMountDir is properly configured.
     if [[ ! -f "$diskImagePath" ]]; then
@@ -218,12 +218,12 @@ opend() {
 
     # Set the loopback device.
     # Find next available one and record both its path and its name.
-    declare -l diskLoopDevicePath=$(sudo losetup --show --find "$diskImagePath") || {
+    declare diskLoopDevicePath=$(sudo losetup --show --find "$diskImagePath") || {
         echo "Loopback device could not be set."
         return 1
     }
 
-    declare -l diskLoopDeviceName=$(basename "$diskLoopDevicePath")
+    declare diskLoopDeviceName=$(basename "$diskLoopDevicePath")
     echo "Using loopback device $diskLoopDeviceName ($diskLoopDevicePath)."
 
     # Decrypt device and map it to loop device.
@@ -262,7 +262,7 @@ closed() {
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare -l diskName="$2"
+            declare diskName="$2"
             shift # go past argument
             shift # go past value
             ;;
@@ -280,10 +280,10 @@ closed() {
         return 1
     fi
 
-    declare -l diskImagePath="$diskImagesMainDir$diskName.img"
-    declare -l diskMountDir="$diskMountMainDir$diskName"
-    declare -l diskLoopDevicePath=$(losetup -j "$diskImagePath" | grep --only-matching --perl-regexp "^(.*?)(?=: \[\]:)")
-    declare -l diskLoopDeviceName=$(basename "$diskLoopDevicePath")
+    declare diskImagePath="$diskImagesMainDir$diskName.img"
+    declare diskMountDir="$diskMountMainDir$diskName"
+    declare diskLoopDevicePath=$(losetup -j "$diskImagePath" | grep --only-matching --perl-regexp "^(.*?)(?=: \[\]:)")
+    declare diskLoopDeviceName=$(basename "$diskLoopDevicePath")
 
     cd ~
 
@@ -333,12 +333,12 @@ backd() {
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare -l diskName="$2"
+            declare diskName="$2"
             shift # go past argument
             shift # go past value
             ;;
             -l|--local)
-            declare -l localFlag=true
+            declare localFlag=true
             shift # go past argument
             ;;
             -*|--*)
@@ -355,11 +355,11 @@ backd() {
         return 1
     fi
 
-    declare -l todayDate=$(date +"%Y-%m-%d")
-    declare -l diskImagePath="$diskImagesMainDir$diskName.img"
-    declare -l diskBackupName="$diskName-$todayDate.img.xz"
-    declare -l diskBackupPath="$diskImagesMainDir$diskBackupName"
-    declare -l diskBackupRemotePath="$diskBackupRemoteName$diskBackupRemoteMainDir$diskBackupName"
+    declare todayDate=$(date +"%Y-%m-%d")
+    declare diskImagePath="$diskImagesMainDir$diskName.img"
+    declare diskBackupName="$diskName-$todayDate.img.xz"
+    declare diskBackupPath="$diskImagesMainDir$diskBackupName"
+    declare diskBackupRemotePath="$diskBackupRemoteName$diskBackupRemoteMainDir$diskBackupName"
 
     if [[ ! -f "$diskImagePath" ]]; then
        echo "Disk $diskImagePath does not exist. Exiting."
