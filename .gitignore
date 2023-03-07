@@ -25,6 +25,7 @@
 !.Rprofile.site
 
 # Do not ignore configration files.
+!.config/cloc
 !.gitconfig
 !.gitignore
 !.hushlogin

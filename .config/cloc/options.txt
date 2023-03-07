@@ -1,0 +1,4 @@
+--exclude-list-file=.clocignore
+--by-file
+--out=STATISTICS
+--force-lang=R,Rprofile
