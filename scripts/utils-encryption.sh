@@ -51,46 +51,46 @@ declare diskBackupRemoteMainDir=Backups/luks/
 
 
 created() {
-    if [[ $# -eq 0 ]]; then
-        echo "Syntax: created --name <string> --size <integer>"
-        echo ""
-        echo "Create an LUKS2 encrypted EXT4 disk image file."
-        echo "Images are stored in $diskImagesMainDir."
-        echo "Disks are mounted in $diskMountMainDir."
-        echo ""
-        echo "Arguments:"
-        echo " -n, --name  name of the disk file"
-        echo " -s, --size  desired size of the disk file in MB (20 MB minimum)"
-        echo ""
-        echo "See related commands opend, closed, and backd."
-        return 1
-    fi
-
     # Parse arguments.
     # Source: https://stackoverflow.com/a/14203146.
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare diskName="$2"
-            shift # go past argument
-            shift # go past value
-            ;;
+                declare diskName="$2"
+                shift # go past argument
+                shift # go past value
+                ;;
             -s|--size)
-            declare -i diskSizeMb="$2"
-            shift # go past argument
-            shift # go past value
-            ;;
-            -*|--*)
-            echo "Unknown argument $1."
-            return 1
-            ;;
+                declare -i diskSizeMb="$2"
+                shift # go past argument
+                shift # go past value
+                ;;
+            -h|--help)
+                echo "Syntax: created --name <string> --size <integer>"
+                echo ""
+                echo "Create an LUKS2 encrypted EXT4 disk image file."
+                echo "Images are stored in $diskImagesMainDir."
+                echo "Disks are mounted in $diskMountMainDir."
+                echo ""
+                echo "Arguments:"
+                echo " -n, --name  name of the disk file"
+                echo " -s, --size  desired size of the disk file in MB (20 MB minimum)"
+                echo " -h, --help  show this help message"
+                echo ""
+                echo "See related commands opend, closed, and backd."
+                return 1
+                ;;
+            *|-*|--*)
+                echo "Unknown argument $1. See created --help."
+                return 1
+                ;;
         esac
     done
 
     # Check if all variables (arguments) are set.
     # Source: https://stackoverflow.com/a/13864829
     if [[ -z ${diskName+x} ]] || [[ -z ${diskSizeMb+x} ]]; then
-        echo "Arguments --name and --size are both required."
+        echo "Arguments --name and --size are both required. See created --help."
         return 1
     fi
 
@@ -168,40 +168,40 @@ created() {
 }
 
 opend() {
-    if [[ $# -eq 0 ]]; then
-        echo "Syntax: opend --name <string>"
-        echo ""
-        echo "Set, decrypt, and mount an encrypted EXT4 disk image file."
-        echo "Images must be stored in $diskImagesMainDir."
-        echo "Disks are mounted in $diskMountMainDir."
-        echo ""
-        echo "Arguments:"
-        echo " -n, --name  name of the disk file"
-        echo ""
-        echo "See related commands created, closed, and backd."
-        return 1
-    fi
-
     # Parse arguments.
     # Source: https://stackoverflow.com/a/14203146.
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare diskName="$2"
-            shift # go past argument
-            shift # go past value
-            ;;
-            -*|--*)
-            echo "Unknown argument $1."
-            return 1
-            ;;
+                declare diskName="$2"
+                shift # go past argument
+                shift # go past value
+                ;;
+            -h|--help)
+                echo "Syntax: opend --name <string>"
+                echo ""
+                echo "Set, decrypt, and mount an encrypted EXT4 disk image file."
+                echo "Images must be stored in $diskImagesMainDir."
+                echo "Disks are mounted in $diskMountMainDir."
+                echo ""
+                echo "Arguments:"
+                echo " -n, --name  name of the disk file"
+                echo " -h, --help  show this help message"
+                echo ""
+                echo "See related commands created, closed, and backd."
+                return 1
+                ;;
+            *|-*|--*)
+                echo "Unknown argument $1. See opend --help."
+                return 1
+                ;;
         esac
     done
 
     # Check if all variables (arguments) are set.
     # Source: https://stackoverflow.com/a/13864829
     if [[ -z ${diskName+x} ]]; then
-        echo "Argument --name is required."
+        echo "Argument --name is required. See opend --help."
         return 1
     fi
 
@@ -244,39 +244,39 @@ opend() {
 }
 
 closed() {
-    if [[ $# -eq 0 ]]; then
-        echo "Syntax: closed --name <string>"
-        echo ""
-        echo "Unmount, close, and remove an encrypted EXT4 disk image file set as a loop device."
-        echo "Disks must be mounted in $diskMountMainDir."
-        echo ""
-        echo "Arguments:"
-        echo " -n, --name  name of the disk file"
-        echo ""
-        echo "See related commands created, closed, and backd."
-        return 1
-    fi
-
     # Parse arguments.
     # Source: https://stackoverflow.com/a/14203146.
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare diskName="$2"
-            shift # go past argument
-            shift # go past value
-            ;;
-            -*|--*)
-            echo "Unknown argument $1."
-            return 1
-            ;;
+                declare diskName="$2"
+                shift # go past argument
+                shift # go past value
+                ;;
+            -h|--help)
+                echo "Syntax: closed --name <string>"
+                echo ""
+                echo "Unmount, close, and remove an encrypted EXT4 disk image file set as a loop device."
+                echo "Disks must be mounted in $diskMountMainDir."
+                echo ""
+                echo "Arguments:"
+                echo " -n, --name  name of the disk file"
+                echo " -h, --help  show this help message"
+                echo ""
+                echo "See related commands created, closed, and backd."
+                return 1
+                ;;
+            *|-*|--*)
+                echo "Unknown argument $1. See closed --help."
+                return 1
+                ;;
         esac
     done
 
     # Check if all variables (arguments) are set.
     # Source: https://stackoverflow.com/a/13864829
     if [[ -z ${diskName+x} ]]; then
-        echo "Argument --name is required."
+        echo "Argument --name is required. See closed --help."
         return 1
     fi
 
@@ -309,49 +309,45 @@ closed() {
 }
 
 backd() {
-    if [[ $# -eq 0 ]]; then
-        echo "Syntax: backd [--local] --name <string>"
-        echo ""
-        echo "Back up an EXT4 disk image file with XZ."
-        echo "Push it to "$diskBackupRemoteName$diskBackupRemoteMainDir" via rclone."
-        echo "Disks must be stored in $diskImagesMainDir."
-        echo ""
-        echo "Arguments:"
-        echo " -n, --name   name of the disk file"
-        echo " -l, --local  keep local back up and do not push it to $diskBackupRemoteName with rclone"
-        echo ""
-        echo "See related commands created, opend, and closed."
-        echo ""
-        echo "Tips:"
-        echo " - To back up a disk containing an rclone profile,"
-        echo "   close it first. Then, reopen it and call backd."
-        return 1
-    fi
-
     # Parse arguments.
     # Source: https://stackoverflow.com/a/14203146.
     while [[ $# -gt 0 ]]; do
         case $1 in
             -n|--name)
-            declare diskName="$2"
-            shift # go past argument
-            shift # go past value
-            ;;
-            -l|--local)
-            declare localFlag=true
-            shift # go past argument
-            ;;
-            -*|--*)
-            echo "Unknown argument $1."
-            return 1
-            ;;
+                declare diskName="$2"
+                shift # go past argument
+                shift # go past value
+                ;;
+            -h|--help)
+                echo "Syntax: backd [--local] --name <string>"
+                echo ""
+                echo "Back up an EXT4 disk image file with XZ."
+                echo "Push it to "$diskBackupRemoteName$diskBackupRemoteMainDir" via rclone."
+                echo "Disks must be stored in $diskImagesMainDir."
+                echo ""
+                echo "Arguments:"
+                echo " -n, --name   name of the disk file"
+                echo " -l, --local  keep local back up and do not push it to $diskBackupRemoteName with rclone"
+                echo " -h, --help   show this help message"
+                echo ""
+                echo "See related commands created, opend, and closed."
+                echo ""
+                echo "Tips:"
+                echo " - To back up a disk containing an rclone profile,"
+                echo "   close it first. Then, reopen it and call backd."
+                return 1
+                ;;
+            *|-*|--*)
+                echo "Unknown argument $1. See backd --help."
+                return 1
+                ;;
         esac
     done
 
     # Check if all variables (arguments) are set.
     # Source: https://stackoverflow.com/a/13864829
     if [[ -z ${diskName+x} ]]; then
-        echo "Argument --name is required."
+        echo "Argument --name is required. See backd --help."
         return 1
     fi
 
