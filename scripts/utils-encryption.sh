@@ -11,11 +11,7 @@
 
 # Multiple disks can be used simultaneously. Mapping is fully automated. There
 # is no need to know which loop devices are available or not. Features are
-# safer by design. You can set the following aliases to list all disks and
-# those that are opened:
-#
-#  alias listd="find $diskImagesMainDir -maxdepth 1 -mindepth 1"
-#  alias listod="losetup -a"
+# safer by design.
 
 # Function backd() pushes backups to a cloud remote via rclone by default. Use
 # flag --local to create a local backup in $diskImagesMainDir. Else, set global
@@ -373,4 +369,21 @@ backd() {
         rclone moveto "$diskBackupPath" "$diskBackupRemotePath" --progress
         echo "Disk $diskName succesfully pushed up to Google Drive ($diskBackupPath was removed)."
     fi
+}
+
+listd() {
+    echo "Listing encrypted disks of $USER."
+    echo "  Opened disks:"
+    losetup -a | sed \
+        -e 's,\[\]: ,,g' \
+        -e 's,[()],,g'   \
+        -e 's,\.img$,,g' \
+        -e "s,$diskImagesMainDir,,g" \
+        -e 's,\: , -> ,g' \
+        -e 's,^,    - ,g'
+
+    echo "  Available disks stored in $diskImagesMainDir:"
+    ls -1 enc | sed \
+        -e 's,\.img$,,g' \
+        -e 's,^,    - ,g'
 }

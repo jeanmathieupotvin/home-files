@@ -8,10 +8,6 @@ alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 alias R="R --no-save"
-alias listd="find $diskImagesMainDir -maxdepth 1 -mindepth 1"
-alias listod="losetup -a"
-alias link-keys='(
-    ln -s "$diskMountMainDir/keys/.ssh" .ssh
-    ln -s "$diskMountMainDir/keys/.gnupg" .gnupg
-)'
+alias link-ssh='ln -s "$diskMountMainDir/keys/.ssh" .ssh'
+alias link-gnupg='ln -s "$diskMountMainDir/keys/.gnupg" .gnupg'
 alias link-rclone='ln -s "$diskMountMainDir/keys/.config/rclone" ~/.config/rclone'
