@@ -374,6 +374,15 @@ backd() {
 listd() {
     echo "Listing encrypted disks of $USER."
     echo "  Opened disks:"
+
+    # sed expressions below do the
+    # following operations in order.
+    #   - remove useless/empty "[]:" strings
+    #   - remove parentheses from paths
+    #   - remove file extensions
+    #   - keep basenames only
+    #   - replace : by ->
+    #   - add indentation
     losetup -a | sed \
         -e 's,\[\]: ,,g' \
         -e 's,[()],,g'   \
@@ -383,6 +392,11 @@ listd() {
         -e 's,^,    - ,g'
 
     echo "  Available disks stored in $diskImagesMainDir:"
+
+    # sed expressions below do the
+    # following operations in order.
+    #   - remove file extensions
+    #   - add indentation
     ls -1 enc | sed \
         -e 's,\.img$,,g' \
         -e 's,^,    - ,g'
