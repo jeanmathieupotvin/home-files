@@ -397,7 +397,7 @@ listd() {
     # following operations in order.
     #   - remove file extensions
     #   - add indentation
-    ls -1 enc | sed \
+    ls -1 "$diskImagesMainDir" | sed \
         -e 's,\.img$,,g' \
         -e 's,^,    - ,g'
 }
