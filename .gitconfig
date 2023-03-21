@@ -19,7 +19,7 @@
 # [core]
 #   autocrlf = false
 # [http]
-#	sslVerify = true
+#   sslVerify = true
 #   sslBackend = schannel
 # [gpg]
-#	program = C:\\Users\\<user>\\AppData\\Local\\gnupg\\bin\\gpg.exe
+#   program = C:\\Users\\<user>\\AppData\\Local\\gnupg\\bin\\gpg.exe
