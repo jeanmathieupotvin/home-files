@@ -133,7 +133,10 @@ created() {
     #  --use-urandom            : RNG to use
     # Source: https://wiki.archlinux.org/title/dm-crypt/Device_encryption
     echo "Setting disk encryption using LUKS2."
-    sudo cryptsetup luksFormat --batch-mode --verify-passphrase "$diskLoopDevicePath" || {
+    sudo cryptsetup luksFormat \
+        --batch-mode \
+        --verify-passphrase \
+        "$diskLoopDevicePath" || {
         echo "LUKS headers could not be set for device $diskLoopDevicePath."
         return 1
     }
@@ -278,7 +281,8 @@ closed() {
 
     declare diskImagePath="$diskImagesMainDir$diskName.img"
     declare diskMountDir="$diskMountMainDir$diskName"
-    declare diskLoopDevicePath=$(losetup -j "$diskImagePath" | grep --only-matching --perl-regexp "^(.*?)(?=: \[\]:)")
+    declare diskLoopDevicePath=$(losetup -j "$diskImagePath" | \
+        grep --only-matching --perl-regexp "^(.*?)(?=: \[\]:)")
     declare diskLoopDeviceName=$(basename "$diskLoopDevicePath")
 
     cd ~
@@ -360,7 +364,12 @@ backd() {
 
     # Compress image with XZ. Maximize compression.
     # By default, XZ reuses file names and appends .xz to them.
-    xz --compress --keep --format=xz --check=sha256 -9 --extreme --threads=0 --verbose "$diskImagePath"
+    xz --compress --keep --format=xz \
+        --check=sha256 -9 \
+        --extreme --threads=0 \
+        --verbose \
+        "$diskImagePath"
+
     mv "$diskImagePath.xz" "$diskBackupPath"
     echo "Disk $diskName succesfully backed up to $diskBackupPath."
 
