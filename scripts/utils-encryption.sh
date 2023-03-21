@@ -128,7 +128,7 @@ created() {
     #  --cipher aes-xts-plain64 : use same cipher as VirtualBox
     #  --hash sha256            : hashing algorithm used to derive key from passphrase
     #  --iter-time 2000         : time to spend with PBKDF2 passphrase processing (milliseconds)
-    #  --key-size 256           : bit size of XTS ciphers; split in half so AES-XTS256-PLAIN64 is used in practice
+    #  --key-size 512           : bit key size of XTS ciphers; split in half for AES-XTS256-PLAIN64
     #  --pbkdf argon2id         : set Password-Based Key Derivation Function algorithm for LUKS keyslot
     #  --use-urandom            : RNG to use
     # Source: https://wiki.archlinux.org/title/dm-crypt/Device_encryption
