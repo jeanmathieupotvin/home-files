@@ -13,6 +13,8 @@
     gpgSign = true
 [core]
     eol = lf  # optional, but safer
+[pull]
+	rebase = false
 
 # Further optional options that can be useful on Windows.
 #
