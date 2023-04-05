@@ -77,7 +77,8 @@ created() {
                 return 1
                 ;;
             *|-*|--*)
-                echo "Unknown argument $1. See created --help."
+                echo "Unknown argument $1."
+                echo "Try 'created --help' for more information."
                 return 1
                 ;;
         esac
@@ -191,7 +192,8 @@ opend() {
                 return 1
                 ;;
             *|-*|--*)
-                echo "Unknown argument $1. See opend --help."
+                echo "Unknown argument $1."
+                echo "Try 'opend --help' for more information."
                 return 1
                 ;;
         esac
@@ -266,7 +268,8 @@ closed() {
                 return 1
                 ;;
             *|-*|--*)
-                echo "Unknown argument $1. See closed --help."
+                echo "Unknown argument $1."
+                echo "Try 'closed --help' for more information."
                 return 1
                 ;;
         esac
@@ -338,7 +341,8 @@ backd() {
                 return 1
                 ;;
             *|-*|--*)
-                echo "Unknown argument $1. See backd --help."
+                echo "Unknown argument $1."
+                echo "Try 'backd --help' for more information."
                 return 1
                 ;;
         esac
