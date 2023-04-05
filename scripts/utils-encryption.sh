@@ -40,7 +40,7 @@
 declare diskImagesMainDir=~/enc/
 declare diskMountMainDir=~/dec/
 declare diskBackupRemoteName=gdrive:
-declare diskBackupRemoteMainDir=Backups/luks/
+declare diskBackupRemoteMainDir=Backups/
 
 
 # Functions --------------------------------------------------------------------
