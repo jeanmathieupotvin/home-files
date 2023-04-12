@@ -3,13 +3,20 @@
 # Kept in ~ for convenience.
 # Source: https://learn.microsoft.com/en-us/windows/wsl/wsl-config#wslconfig.
 
+# Notes
+#
+# - [April 12, 2023] wsl2.pageReporting is disabled until further notice to prevent
+#   error "Unknown key 'wsl2.pageReporting' [...]' reported by EventViewer. This is
+#   not documented in WSL config help page. This allows Windows to reclaim unused
+#   memory from WSL.
+
 [wsl2]
     memory = 32GB                 # use at most half of available RAM
     processors = 20               # use all logical cores of my Core-i9 12900HK
     localhostForwarding = true    # bind WSL2 localhost to Windows localhost.
     swap = 16GB                   # do note use swap storage space.
     swapFile = W:\\swap.vhdx      # Store swap file with distros.
-    pageReporting = false         # WSL2 keeps all allocated memory and releases none.
+    # pageReporting = false       # WSL2 keeps all allocated memory and releases none.
     guiApplications = true        # turn on support for GUI applications (WSLg).
     debugConsole = false          # turn off output console showing contents of dmesg at boot.
     nestedVirtualization = false  # disables nested virtualization.
