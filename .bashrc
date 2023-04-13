@@ -86,7 +86,7 @@ HISTFILESIZE=5  # Max number of lines written to .bash_history.
 
 # Set up display for X11 Server.
 # This replaces WSLg until further notice.
-# X11 Windows and cleaner, faster, and better suits my needs.
+# X11 Windows are cleaner, faster, and better suits my needs.
 # Command below create a string having format <IPv4>:0.
 # Source: https://www.guide2wsl.com/x11/
 export DISPLAY=$(ip route show default | sed -n 's/.*via \([^ ]\+\).*$/\1/p'):0
