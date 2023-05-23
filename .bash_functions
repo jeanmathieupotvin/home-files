@@ -1,8 +1,5 @@
 # ~/.bash_functions: executed by bash(1) for all shells (via .bashrc).
 # Collection of user functions.
 
-declare utilsEncryptionPath=~/scripts/utils-encryption.sh
-
-if [ -f "$utilsEncryptionPath" ]; then
-    . "$utilsEncryptionPath"
-fi
+. ~/scripts/utils-encryption.sh
+. ~/scripts/utils-secrets.sh

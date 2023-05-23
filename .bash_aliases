@@ -8,6 +8,6 @@ alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 alias R="R --no-save"
-alias link-ssh='ln -s "$diskMountMainDir/keys/.ssh" .ssh'
-alias link-gnupg='ln -s "$diskMountMainDir/keys/.gnupg" .gnupg'
-alias link-rclone='ln -s "$diskMountMainDir/keys/.config/rclone" ~/.config/rclone'
+alias lnssh='ln -s "$secretsDir/.ssh" .ssh'
+alias lngnupg='ln -s "$secretsDir/.gnupg" .gnupg'
+alias lnrclone='ln -s "$secretsDir/.config/rclone" ~/.config/rclone'
