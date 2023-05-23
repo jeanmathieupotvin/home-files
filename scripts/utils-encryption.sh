@@ -25,20 +25,20 @@
 #   - diskName=test
 #   - diskSizeMb=20
 #   - diskBlocksCount=5120
-#   - diskImagesMainDir=~/enc/
-#   - diskMountMainDir=~/dec/
-#   - diskImagePath=~/enc/test.img
-#   - diskMountDir=~/dec/test/
+#   - diskImagesMainDir=~/images/
+#   - diskMountMainDir=~/projects/
+#   - diskImagePath=~/images/test.img
+#   - diskMountDir=~/projects/test/
 #   - diskLoopDevicePath=/dev/loop0
 #   - diskBackupName=test-2023-01-01.img.xz
-#   - diskBackupPath=~/enc/test-2023-01-01.img.xz
+#   - diskBackupPath=~/images/test-2023-01-01.img.xz
 #   - diskBackupRemoteName=gdrive:
 #   - diskBackupRemoteMainDir=Backups/luks/
 #   - diskBackupRemotePath=gdrive:Backups/luks/test-2023-01-01.img.xz
 
 
-declare diskImagesMainDir=~/enc/
-declare diskMountMainDir=~/dec/
+declare diskImagesMainDir=~/images/
+declare diskMountMainDir=~/projects/
 declare diskBackupRemoteName=gdrive:
 declare diskBackupRemoteMainDir=Backups/
 
@@ -239,7 +239,7 @@ opend() {
         return 1
     }
 
-    echo "Disk $diskImagePath succesfully opened. Close it with closed."
+    echo "Disk $diskImagePath successfully opened."
     echo "Current directory set to $diskMountDir."
     cd "$diskMountDir"
 }
@@ -308,7 +308,7 @@ closed() {
         return 1
     }
 
-    echo "Disk $diskName succesfully closed."
+    echo "Disk $diskName successfully closed."
 }
 
 backd() {
@@ -375,18 +375,18 @@ backd() {
         "$diskImagePath"
 
     mv "$diskImagePath.xz" "$diskBackupPath"
-    echo "Disk $diskName succesfully backed up to $diskBackupPath."
+    echo "Disk $diskName successfully backed up to $diskBackupPath."
 
     # Push backup to remote using rclone.
     if [[ -z ${localFlag+x} && $(command -v rclone) ]]; then
         rclone moveto "$diskBackupPath" "$diskBackupRemotePath" --progress
-        echo "Disk $diskName succesfully pushed up to Google Drive ($diskBackupPath was removed)."
+        echo "Disk $diskName successfully pushed up to Google Drive ($diskBackupPath was removed)."
     fi
 }
 
 listd() {
-    echo "Listing encrypted disks of $USER."
-    echo "  Opened disks:"
+    echo "Listing images of $USER."
+    echo "  Opened images:"
 
     # sed expressions below do the
     # following operations in order.
@@ -404,7 +404,7 @@ listd() {
         -e 's,\: , -> ,g' \
         -e 's,^,    - ,g'
 
-    echo "  Available disks stored in $diskImagesMainDir:"
+    echo "  Available images:"
 
     # sed expressions below do the
     # following operations in order.
