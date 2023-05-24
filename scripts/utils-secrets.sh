@@ -1,14 +1,15 @@
 # utils-secrets.sh: executed by bash(1) for all shells via .bash_functions.
 # Lock and unlock encrypted secrets. They are stored as an encrypted image file.
+# This script is a simplification of ./utils-images.sh.
 # See secrets::help() for usage.
 
 
 # Globals ----------------------------------------------------------------------
 
 
-declare -i secretsImageSizeInMb=20
-declare secretsImagePath=~/images/secrets.img
-declare secretsDir=~/secrets/
+declare -i secretsImageSizeInMb=50
+declare secretsImagePath="$HOME/images/secrets.img"
+declare secretsDir="$HOME/secrets/"
 
 
 # Main function ----------------------------------------------------------------
@@ -17,19 +18,23 @@ declare secretsDir=~/secrets/
 secrets() {
     case $1 in
         init)
-            secrets::initialize
+            shift # go past command
+            secrets::initialize "$@"
             ;;
         lock)
-            secrets::lock
+            shift # go past command
+            secrets::lock "$@"
             ;;
         unlock)
-            secrets::unlock
+            shift # go past command
+            secrets::unlock "$@"
             ;;
         help)
-            secrets::help
+            shift # go past command
+            secrets::help "$@"
             ;;
         *)
-            echo "Unknown argument $1. Try 'secrets help'."
+            echo "Unknown command $1. Try 'secrets help'."
             return 1
             ;;
     esac
@@ -40,9 +45,9 @@ secrets() {
 
 
 secrets::help() {
-    echo "Syntax: secrets <init|lock|unlock|help>"
+    echo "Syntax: secrets <command>"
     echo ""
-    echo "Arguments:"
+    echo "Commands:"
     echo "  init    create a new container (an image file and a mount directory)."
     echo "  unlock  decrypt and mount your secrets."
     echo "  lock    unmount and encrypt your secrets."
@@ -50,7 +55,11 @@ secrets::help() {
     echo ""
     echo "Tips:"
     echo "  - Users can modify exported variables below to handle many containers."
-    echo "  - Containers are configured to be small by default (20 MB)."
+    echo "  - Containers uses $secretsImageSizeInMb MB by default."
+    echo ""
+    echo "Current settings:"
+    echo "  - secretsImagePath [path to image]  : $secretsImagePath"
+    echo "  - secretsDir       [mount directory]: $secretsDir"
 }
 
 secrets::unlock() {
