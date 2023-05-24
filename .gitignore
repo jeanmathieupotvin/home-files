@@ -8,6 +8,10 @@
 !/.config
 .config/*
 
+# Do not ignore logs folder but ignore its contents.
+!/logs
+logs/*
+
 # Do not ignore important symbolic links.
 !.ssh
 !.gnupg
