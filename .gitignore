@@ -26,6 +26,7 @@
 
 # Do not ignore configration files.
 !.config/cloc
+!.crontab
 !.gitconfig
 !.gitignore
 !.hushlogin
