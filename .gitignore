@@ -30,6 +30,7 @@
 !.gitconfig
 !.gitignore
 !.hushlogin
+!.selected_editor
 !.wslconfig
 !.wsl.conf
 
