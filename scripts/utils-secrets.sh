@@ -7,7 +7,7 @@
 # Globals ----------------------------------------------------------------------
 
 
-declare -i secretsImageSizeInMb=50
+declare -i secretsImageDefaultSizeInMb=50
 declare secretsImagePath="$HOME/images/secrets.img"
 declare secretsDir="$HOME/secrets/"
 
@@ -21,13 +21,13 @@ secrets() {
             shift # go past command
             secrets::initialize "$@"
             ;;
-        lock)
-            shift # go past command
-            secrets::lock "$@"
-            ;;
         unlock)
             shift # go past command
             secrets::unlock "$@"
+            ;;
+        lock)
+            shift # go past command
+            secrets::lock "$@"
             ;;
         help)
             shift # go past command
@@ -48,14 +48,14 @@ secrets::help() {
     echo "Syntax: secrets <command>"
     echo ""
     echo "Commands:"
-    echo "  init    create a new container (an image file and a mount directory)."
+    echo "  init    create a new container (an image file and its mount directory)."
     echo "  unlock  decrypt and mount your secrets."
     echo "  lock    unmount and encrypt your secrets."
     echo "  help    print this help page."
     echo ""
     echo "Tips:"
     echo "  - Users can modify exported variables below to handle many containers."
-    echo "  - Containers uses $secretsImageSizeInMb MB by default."
+    echo "  - Containers uses $secretsImageDefaultSizeInMb MB by default."
     echo ""
     echo "Current settings:"
     echo "  - secretsImagePath [path to image]  : $secretsImagePath"
@@ -83,15 +83,21 @@ secrets::lock() {
     sudo cryptsetup close "$secretsDeviceName"
     sudo losetup -d "$secretsDevicePath"
 
-    # Unset exported environment variables created by unlocksecrets.
+    # Unset exported environment variables previously set by secrets::unlock.
     unset secretsDevicePath
     unset secretsDeviceName
 }
 
 secrets::initialize() {
-    # Number of blocks is equal to secretsImageSizeInMb * (1024 KB/MB) / (4 KB/BLOCK).
+    if [[ $secretsImageDefaultSizeInMb -lt 20 ]]; then
+        echo "Constant secretsImageDefaultSizeInMb must be greater than 20 MB."
+        echo "This is required to allocate enough space for LUKS header."
+        return 1
+    fi
+
+    # Number of blocks is equal to secretsImageDefaultSizeInMb * (1024 KB/MB) / (4 KB/BLOCK).
     # EXT4 filesystems uses blocks of size 4KB.
-    declare -i nBlocks=$secretsImageSizeInMb*1024/4
+    declare -i nBlocks=$secretsImageDefaultSizeInMb*1024/4
 
     # Create secretsDir if it does not exist.
     if [[ ! -d "$secretsDir" ]]; then
@@ -116,10 +122,7 @@ secrets::initialize() {
     #  --key-size 512           : bit key size of XTS ciphers; split in half for AES-XTS256-PLAIN64
     #  --pbkdf argon2id         : set Password-Based Key Derivation Function algorithm for LUKS keyslot
     #  --use-urandom            : RNG to use
-    sudo cryptsetup luksFormat \
-        --batch-mode \
-        --verify-passphrase \
-        "$secretsDevicePath"
+    sudo cryptsetup luksFormat --batch-mode "$secretsDevicePath"
 
     # Map device and decrypt its contents.
     # Format decrypted device as an EXT4 filesystem.
