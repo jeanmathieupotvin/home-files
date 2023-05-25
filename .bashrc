@@ -83,3 +83,6 @@ shopt -s histappend
 HISTCONTROL=ignoredups:ignorespace
 HISTSIZE=10     # Max number of lines stored in memory.
 HISTFILESIZE=5  # Max number of lines written to .bash_history.
+
+# Record today's date.
+export TODAY=$(date +"%Y-%m-%d")
