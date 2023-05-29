@@ -11,7 +11,6 @@
 # Do not ignore important symbolic links.
 !.ssh
 !.gnupg
-!.config/rclone
 
 # Do not ignore bash files.
 !.bashrc
