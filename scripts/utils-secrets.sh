@@ -7,9 +7,9 @@
 # Globals ----------------------------------------------------------------------
 
 
-declare -i secretsImageDefaultSizeInMb=50
-declare secretsImagePath="$HOME/images/secrets.img"
-declare secretsDir="$HOME/secrets/"
+export SECRETS_IMAGE_DEFAULT_SIZE_IN_MB=50
+export SECRETS_IMAGE_PATH="$HOME/images/secrets.img"
+export SECRETS_DIR="$HOME/secrets/"
 
 
 # Main function ----------------------------------------------------------------
@@ -55,62 +55,62 @@ secrets::help() {
     echo ""
     echo "Tips:"
     echo "  - Users can modify exported variables below to handle many containers."
-    echo "  - Containers uses $secretsImageDefaultSizeInMb MB by default."
+    echo "  - Containers uses $SECRETS_IMAGE_DEFAULT_SIZE_IN_MB MB by default."
     echo ""
     echo "Current settings:"
-    echo "  - secretsImagePath [path to image]  : $secretsImagePath"
-    echo "  - secretsDir       [mount directory]: $secretsDir"
+    echo "  - SECRETS_IMAGE_PATH [path to image] : $SECRETS_IMAGE_PATH"
+    echo "  - SECRETS_DIR       [mount directory]: $SECRETS_DIR"
 }
 
 secrets::unlock() {
     # Set loopback device.
     # Find next available one.
     # Export its path and name as environment variables.
-    export secretsDevicePath=$(sudo losetup --show --find "$secretsImagePath")
-    export secretsDeviceName=$(basename "$secretsDevicePath")
+    export SECRETS_DEVICE_PATH=$(sudo losetup --show --find "$SECRETS_IMAGE_PATH")
+    export SECRETS_DEVICE_NAME=$(basename "$SECRETS_DEVICE_PATH")
 
     # Map device and decrypt its contents.
     # Mount device in dedicated directory.
-    sudo cryptsetup open "$secretsDevicePath" "$secretsDeviceName"
-    sudo mount "/dev/mapper/$secretsDeviceName" "$secretsDir"
+    sudo cryptsetup open "$SECRETS_DEVICE_PATH" "$SECRETS_DEVICE_NAME"
+    sudo mount "/dev/mapper/$SECRETS_DEVICE_NAME" "$SECRETS_DIR"
 }
 
 secrets::lock() {
     # Unmount device.
     # Encrypt contents of device.
     # Remove device.
-    sudo umount "$secretsDir"
-    sudo cryptsetup close "$secretsDeviceName"
-    sudo losetup -d "$secretsDevicePath"
+    sudo umount "$SECRETS_DIR"
+    sudo cryptsetup close "$SECRETS_DEVICE_NAME"
+    sudo losetup -d "$SECRETS_DEVICE_PATH"
 
     # Unset exported environment variables previously set by secrets::unlock.
-    unset secretsDevicePath
-    unset secretsDeviceName
+    unset SECRETS_DEVICE_PATH
+    unset SECRETS_DEVICE_NAME
 }
 
 secrets::initialize() {
-    if [[ $secretsImageDefaultSizeInMb -lt 20 ]]; then
-        echo "Constant secretsImageDefaultSizeInMb must be greater than 20 MB."
+    if [[ $SECRETS_IMAGE_DEFAULT_SIZE_IN_MB -lt 20 ]]; then
+        echo "Constant SECRETS_IMAGE_DEFAULT_SIZE_IN_MB must be greater than 20 MB."
         echo "This is required to allocate enough space for LUKS header."
         return 1
     fi
 
-    # Number of blocks is equal to secretsImageDefaultSizeInMb * (1024 KB/MB) / (4 KB/BLOCK).
+    # Number of blocks is equal to SECRETS_IMAGE_DEFAULT_SIZE_IN_MB * (1024 KB/MB) / (4 KB/BLOCK).
     # EXT4 filesystems uses blocks of size 4KB.
-    declare -i nBlocks=$secretsImageDefaultSizeInMb*1024/4
+    declare -i nBlocks=$SECRETS_IMAGE_DEFAULT_SIZE_IN_MB*1024/4
 
-    # Create secretsDir if it does not exist.
-    if [[ ! -d "$secretsDir" ]]; then
-        mkdir "$secretsDir"
+    # Create SECRETS_DIR if it does not exist.
+    if [[ ! -d "$SECRETS_DIR" ]]; then
+        mkdir "$SECRETS_DIR"
     fi
 
     # Create image file.
-    dd if=/dev/zero of="$secretsImagePath" bs=4k count=$nBlocks
+    dd if=/dev/zero of="$SECRETS_IMAGE_PATH" bs=4k count=$nBlocks
 
     # Set loopback device to initialize LUKS partition.
     # Find next available one. Register its path and name.
-    declare secretsDevicePath=$(sudo losetup --show --find "$secretsImagePath")
-    declare secretsDeviceName=$(basename "$secretsDevicePath")
+    declare SECRETS_DEVICE_PATH=$(sudo losetup --show --find "$SECRETS_IMAGE_PATH")
+    declare SECRETS_DEVICE_NAME=$(basename "$SECRETS_DEVICE_PATH")
 
     # Initialize LUKS partition on device.
     # Argument luksFormat is equivalent to the following arguments.
@@ -122,16 +122,16 @@ secrets::initialize() {
     #  --key-size 512           : bit key size of XTS ciphers; split in half for AES-XTS256-PLAIN64
     #  --pbkdf argon2id         : set Password-Based Key Derivation Function algorithm for LUKS keyslot
     #  --use-urandom            : RNG to use
-    sudo cryptsetup luksFormat --batch-mode "$secretsDevicePath"
+    sudo cryptsetup luksFormat --batch-mode "$SECRETS_DEVICE_PATH"
 
     # Map device and decrypt its contents.
     # Format decrypted device as an EXT4 filesystem.
-    # Mount device in secretsDir.
-    # Cede ownership of secretsDir to current user.
-    sudo cryptsetup open "$secretsDevicePath" "$secretsDeviceName"
-    sudo mkfs.ext4 "/dev/mapper/$secretsDeviceName"
-    sudo mount "/dev/mapper/$secretsDeviceName" "$secretsDir"
-    sudo chown "$USER:$USER" "$secretsDir"
+    # Mount device in SECRETS_DIR.
+    # Cede ownership of SECRETS_DIR to current user.
+    sudo cryptsetup open "$SECRETS_DEVICE_PATH" "$SECRETS_DEVICE_NAME"
+    sudo mkfs.ext4 "/dev/mapper/$SECRETS_DEVICE_NAME"
+    sudo mount "/dev/mapper/$SECRETS_DEVICE_NAME" "$SECRETS_DIR"
+    sudo chown "$USER:$USER" "$SECRETS_DIR"
 
     secrets::lock
 }

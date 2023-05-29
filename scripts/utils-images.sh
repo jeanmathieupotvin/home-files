@@ -15,9 +15,9 @@
 # Globals ----------------------------------------------------------------------
 
 
-declare -i imagesDefaultSizeInMb=1000
-declare imagesLockedDir="$HOME/images/"
-declare imagesUnlockedDir="$HOME/projects/"
+export IMAGES_DEFAULT_SIZE_IN_MB=1000
+export IMAGES_LOCKED_DIR="$HOME/images/"
+export IMAGES_UNLOCKED_DIR="$HOME/projects/"
 
 
 # Main function ----------------------------------------------------------------
@@ -60,7 +60,7 @@ images::help() {
     echo "Syntax: images <command> <name>"
     echo ""
     echo "Commands:"
-    echo "  list    list unlocked and available images stored in $imagesLockedDir."
+    echo "  list    list unlocked and available images stored in $IMAGES_LOCKED_DIR."
     echo "  init    create a new container (an image file and its mount directory)."
     echo "  unlock  decrypt and mount your image as a device."
     echo "  lock    unmount and encrypt your image."
@@ -70,13 +70,13 @@ images::help() {
     echo "  name    image's name to initialize, lock, or unlock."
     echo ""
     echo "Tips:"
-    echo "  - Containers uses $imagesDefaultSizeInMb MB by default."
+    echo "  - Containers uses $IMAGES_DEFAULT_SIZE_IN_MB MB by default."
     echo "  - Modify environment variables below to change commands' behavior."
     echo ""
     echo "Current settings:"
-    echo "  - imagesDefaultSizeInMb [default size (MB)]   : $imagesDefaultSizeInMb"
-    echo "  - imagesLockedDir       [images' directory]   : $imagesLockedDir"
-    echo "  - imagesUnlockedDir     [main mount directory]: $imagesUnlockedDir"
+    echo "  - IMAGES_DEFAULT_SIZE_IN_MB [default size (MB)]   : $IMAGES_DEFAULT_SIZE_IN_MB"
+    echo "  - IMAGES_LOCKED_DIR         [images' directory]   : $IMAGES_LOCKED_DIR"
+    echo "  - IMAGES_UNLOCKED_DIR       [main mount directory]: $IMAGES_UNLOCKED_DIR"
 }
 
 images::list() {
@@ -95,25 +95,25 @@ images::list() {
         -e 's,\[\]: ,,g' \
         -e 's,[()],,g'   \
         -e 's,\.img$,,g' \
-        -e "s,$imagesLockedDir,,g" \
+        -e "s,$IMAGES_LOCKED_DIR,,g" \
         -e 's,\: , -> ,g' \
         -e 's,^,  - ,g'
 
-    echo "Available images in $imagesLockedDir:"
+    echo "Available images in $IMAGES_LOCKED_DIR:"
 
     # sed expressions below do the
     # following operations in order.
     #   - remove file extensions
     #   - add indentation
-    ls -1 "$imagesLockedDir" | sed \
+    ls -1 "$IMAGES_LOCKED_DIR" | sed \
         -e 's,\.img$,,g' \
         -e 's,^,  - ,g'
 }
 
 images::unlock() {
     declare imageName="$1"
-    declare imagePath="$imagesLockedDir$imageName.img"
-    declare imageDir="$imagesUnlockedDir$imageName"
+    declare imagePath="$IMAGES_LOCKED_DIR$imageName.img"
+    declare imageDir="$IMAGES_UNLOCKED_DIR$imageName"
 
     # Set loopback device.
     # Find next available one.
@@ -129,8 +129,8 @@ images::unlock() {
 
 images::lock() {
     declare imageName="$1"
-    declare imagePath="$imagesLockedDir$imageName.img"
-    declare imageDir="$imagesUnlockedDir$imageName"
+    declare imagePath="$IMAGES_LOCKED_DIR$imageName.img"
+    declare imageDir="$IMAGES_UNLOCKED_DIR$imageName"
 
     # Find device mapped to imageName.
     declare imageDevicePath=$(losetup -j "$imagePath" | \
@@ -146,19 +146,19 @@ images::lock() {
 }
 
 images::initialize() {
-    if [[ $imagesDefaultSizeInMb -lt 20 ]]; then
-        echo "Constant imagesDefaultSizeInMb must be greater than 20 MB."
+    if [[ $IMAGES_DEFAULT_SIZE_IN_MB -lt 20 ]]; then
+        echo "Constant IMAGES_DEFAULT_SIZE_IN_MB must be greater than 20 MB."
         echo "This is required to allocate enough space for LUKS header."
         return 1
     fi
 
     declare imageName="$1"
-    declare imagePath="$imagesLockedDir$imageName.img"
-    declare imageDir="$imagesUnlockedDir$imageName"
+    declare imagePath="$IMAGES_LOCKED_DIR$imageName.img"
+    declare imageDir="$IMAGES_UNLOCKED_DIR$imageName"
 
-    # Number of blocks is equal to imagesDefaultSizeInMb * (1024 KB/MB) / (4 KB/BLOCK).
+    # Number of blocks is equal to IMAGES_DEFAULT_SIZE_IN_MB * (1024 KB/MB) / (4 KB/BLOCK).
     # This is because EXT4 filesystems typically uses blocks of size 4KB.
-    declare -i nBlocks="$imagesDefaultSizeInMb"*1024/4
+    declare -i nBlocks="$IMAGES_DEFAULT_SIZE_IN_MB"*1024/4
 
     # Create imageDir if it does not exist.
     if [[ ! -d "$imageDir" ]]; then
