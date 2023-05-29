@@ -85,6 +85,7 @@ images::list() {
 
     # sed expressions below do the
     # following operations in order.
+    #   - delete line of $SECRETS_IMAGE_PATH
     #   - remove useless/empty "[]:" strings
     #   - remove parentheses from paths
     #   - remove file extensions
@@ -92,10 +93,11 @@ images::list() {
     #   - replace : by ->
     #   - add indentation
     losetup -a | sed \
+        -e "/$(basename $SECRETS_IMAGE_PATH)/d" \
         -e 's,\[\]: ,,g' \
         -e 's,[()],,g'   \
         -e 's,\.img$,,g' \
-        -e "s,$IMAGES_LOCKED_DIR,,g" \
+        -e 's,"$IMAGES_LOCKED_DIR",,g' \
         -e 's,\: , -> ,g' \
         -e 's,^,  - ,g'
 
@@ -103,9 +105,11 @@ images::list() {
 
     # sed expressions below do the
     # following operations in order.
+    #   - delete line of $SECRETS_IMAGE_PATH
     #   - remove file extensions
     #   - add indentation
     ls -1 "$IMAGES_LOCKED_DIR" | sed \
+        -e "/$(basename $SECRETS_IMAGE_PATH)/d" \
         -e 's,\.img$,,g' \
         -e 's,^,  - ,g'
 }
