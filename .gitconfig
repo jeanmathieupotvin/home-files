@@ -3,8 +3,8 @@
 
 [user]
     name = Jean-Mathieu Potvin
-    email = jm@potvin.xyz
-    signingKey = A33E53429798B393!
+    email = jeanmathieupotvin@ununoctium.dev
+    signingKey = C1B406E6A30F225E!
 [init]
     defaultBranch = main
 [credential]
