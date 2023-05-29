@@ -98,9 +98,16 @@ secrets::unlock() {
         unset SECRETS_DEVICE_PATH
         return 1
     }
+
+    # Add SSH key to agent.
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add $HOME/.ssh/id_ed25519
 }
 
 secrets::lock() {
+    # Remove SSH key from agent.
+    ssh-add -D
+
     # Unmount device.
     # Encrypt contents of device.
     # Remove device.
