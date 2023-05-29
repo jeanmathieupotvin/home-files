@@ -4,7 +4,7 @@
 # Ignore everything by default.
 /*
 
-# Do not ignore some files and folders in .config (negates /* above).
+# Do not ignore some files and folders in .config.
 !/.config
 .config/*
 
