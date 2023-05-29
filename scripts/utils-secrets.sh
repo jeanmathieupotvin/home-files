@@ -21,6 +21,10 @@ secrets() {
             shift # go past command
             secrets::initialize "$@"
             ;;
+        state)
+            shift # go past command
+            secrets::state "$@"
+            ;;
         unlock)
             shift # go past command
             secrets::unlock "$@"
@@ -49,6 +53,7 @@ secrets::help() {
     echo ""
     echo "Commands:"
     echo "  init    create a new container (an image file and its mount directory)."
+    echo "  state   check current state (locked or unlocked) of secrets."
     echo "  unlock  decrypt and mount your secrets."
     echo "  lock    unmount and encrypt your secrets."
     echo "  help    print this help page."
@@ -60,6 +65,16 @@ secrets::help() {
     echo "Current settings:"
     echo "  - SECRETS_IMAGE_PATH [path to image] : $SECRETS_IMAGE_PATH"
     echo "  - SECRETS_DIR       [mount directory]: $SECRETS_DIR"
+}
+
+secrets::state() {
+    if [[ ! -z "$SECRETS_DEVICE_PATH" ]]; then
+        declare state=unlocked
+    else
+        declare state=locked
+    fi
+
+    echo "Secrets are $state."
 }
 
 secrets::unlock() {
