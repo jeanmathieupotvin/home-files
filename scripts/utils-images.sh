@@ -122,9 +122,17 @@ images::unlock() {
     declare imageDeviceName=$(basename "$imageDevicePath")
 
     # Map device and decrypt its contents.
+    sudo cryptsetup open "$imageDevicePath" "$imageDeviceName" || {
+        sudo losetup -d "$imageDevicePath"
+        return 1
+    }
+
     # Mount device in dedicated directory.
-    sudo cryptsetup open "$imageDevicePath" "$imageDeviceName"
-    sudo mount "/dev/mapper/$imageDeviceName" "$imageDir"
+    sudo mount "/dev/mapper/$imageDeviceName" "$imageDir" || {
+        sudo cryptsetup close "$imageDeviceName"
+        sudo losetup -d "$imageDevicePath"
+        return 1
+    }
 }
 
 images::lock() {

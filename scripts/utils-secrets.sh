@@ -70,9 +70,19 @@ secrets::unlock() {
     export SECRETS_DEVICE_NAME=$(basename "$SECRETS_DEVICE_PATH")
 
     # Map device and decrypt its contents.
+    sudo cryptsetup open "$SECRETS_DEVICE_PATH" "$SECRETS_DEVICE_NAME" || {
+        sudo losetup -d "$SECRETS_DEVICE_PATH"
+        unset SECRETS_DEVICE_PATH
+        return 1
+    }
+
     # Mount device in dedicated directory.
-    sudo cryptsetup open "$SECRETS_DEVICE_PATH" "$SECRETS_DEVICE_NAME"
-    sudo mount "/dev/mapper/$SECRETS_DEVICE_NAME" "$SECRETS_DIR"
+    sudo mount "/dev/mapper/$SECRETS_DEVICE_NAME" "$SECRETS_DIR" || {
+        sudo cryptsetup close "$imageDeviceName"
+        sudo losetup -d "$SECRETS_DEVICE_PATH"
+        unset SECRETS_DEVICE_PATH
+        return 1
+    }
 }
 
 secrets::lock() {
