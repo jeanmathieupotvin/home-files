@@ -137,6 +137,8 @@ images::unlock() {
         sudo losetup -d "$imageDevicePath"
         return 1
     }
+
+    cd "$imageDir"
 }
 
 images::lock() {
@@ -155,6 +157,8 @@ images::lock() {
     sudo umount "$imageDir"
     sudo cryptsetup close "$imageDeviceName"
     sudo losetup -d "$imageDevicePath"
+
+    cd
 }
 
 images::initialize() {
