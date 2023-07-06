@@ -86,3 +86,7 @@ HISTFILESIZE=5  # Max number of lines written to .bash_history.
 
 # Record today's date.
 export TODAY=$(date +"%Y-%m-%d")
+
+# Load Rust/Cargo environment variables.
+# Added by rustup during installation.
+. "$HOME/.cargo/env"
