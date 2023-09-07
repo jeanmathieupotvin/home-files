@@ -1,7 +1,7 @@
 # ~/.crontab: scheduled tasks via crontab. Executed by cron.
 # Use crontab -e to add tasks below. Use crontab -l to list them.
 
-# Copy images in ~/images to external hard drive every day at 16:00.
+# Copy images in ~/images to external hard drive every day at 15:00.
 # Hard drive is automatically mounted to /mnt/d by WSL2.
 # % signs must be escaped in date command.
-0 16 * * * rsync --recursive --verbose "$HOME/images" /mnt/d/backups --log-file="/mnt/d/backups/images/logs/$(date +"\%Y-\%m-\%d").log"
+0 15 * * * rsync --recursive --verbose "$HOME/images" /mnt/d/backups --log-file="/mnt/d/backups/images/logs/$(date +"\%Y-\%m-\%d").log"
