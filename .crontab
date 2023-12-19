@@ -5,4 +5,4 @@
 # Hard drive is automatically mounted to /mnt/d by WSL2.
 # % signs must be escaped in date command.
 0 15 * * * rsync --recursive --verbose "$HOME/images" /mnt/d/backups --log-file="/mnt/d/backups/images/_logs/$(date +"\%Y-\%m-\%d").log"
-0 15 * * * rsync --recursive --verbose "$HOME/projects" /mnt/d/backups --prune-empty-dirs --log-file="/mnt/d/backups/projects/_logs/$(date +"\%Y-\%m-\%d").log"
+0 15 * * * rsync --recursive --verbose --prune-empty-dirs "$HOME/projects" /mnt/d/backups --log-file="/mnt/d/backups/projects/_logs/$(date +"\%Y-\%m-\%d").log"
