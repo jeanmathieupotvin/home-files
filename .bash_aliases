@@ -8,7 +8,6 @@ alias dir="dir --color=auto"
 alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
-alias isync='rsync --recursive --verbose "$HOME/images" /mnt/d/backups --log-file="/mnt/d/backups/images/logs/$(date +"%Y-%m-%d").log"'
 alias R="R --no-save"
 alias lnssh='ln -s "$secretsDir/.ssh" .ssh'
 alias lngnupg='ln -s "$secretsDir/.gnupg" .gnupg'
