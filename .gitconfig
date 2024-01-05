@@ -4,7 +4,7 @@
 [user]
     name = Jean-Mathieu Potvin
     email = jeanmathieupotvin@ununoctium.dev
-    signingKey = C1B406E6A30F225E!
+    signingKey = 73C2D13C26A0CDD0!
 [init]
     defaultBranch = main
 [credential]
