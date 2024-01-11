@@ -89,4 +89,4 @@ export TODAY=$(date +"%Y-%m-%d")
 
 # Load Rust/Cargo environment variables.
 # Added by rustup during installation.
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"
