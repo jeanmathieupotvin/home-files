@@ -3,8 +3,8 @@
 
 [user]
     name = Jean-Mathieu Potvin
-    email = jeanmathieupotvin@ununoctium.dev
-    signingKey = 73C2D13C26A0CDD0!
+    email = jean-mathieu.potvin@geosapiens.ca
+    signingKey = AFABDEC38FC664B5!
 [init]
     defaultBranch = main
 [credential]
