@@ -10,6 +10,7 @@
 export SECRETS_IMAGE_DEFAULT_SIZE_IN_MB=50
 export SECRETS_IMAGE_PATH="$HOME/images/secrets.img"
 export SECRETS_DIR="$HOME/secrets/"
+export SECRETS_SSH_KEY_PATH="$HOME/.ssh/id_ed25519"
 
 
 # Main function ----------------------------------------------------------------
@@ -99,9 +100,11 @@ secrets::unlock() {
         return 1
     }
 
-    # Add SSH key to agent.
-    eval "$(ssh-agent -s)" > /dev/null
-    ssh-add $HOME/.ssh/id_ed25519
+    # Add SSH key to agent if it exists.
+    if [[ -f "$SECRETS_SSH_KEY_PATH" ]]; then
+        eval "$(ssh-agent -s)" > /dev/null
+        ssh-add "$SECRETS_SSH_KEY_PATH"
+    fi
 }
 
 secrets::lock() {
