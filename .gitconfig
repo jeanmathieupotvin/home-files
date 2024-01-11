@@ -4,7 +4,7 @@
 [user]
     name = Jean-Mathieu Potvin
     email = jean-mathieu.potvin@geosapiens.ca
-    signingKey = AFABDEC38FC664B5!
+    signingKey = A1EC28AEDDAAFDC3!
 [init]
     defaultBranch = main
 [credential]
