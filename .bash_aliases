@@ -12,3 +12,4 @@ alias R="R --no-save"
 alias lnssh='ln -s "$secretsDir/.ssh" .ssh'
 alias lngnupg='ln -s "$secretsDir/.gnupg" .gnupg'
 alias lnrclone='ln -s "$secretsDir/.config/rclone" ~/.config/rclone'
+alias gsdocs="cd /mnt/c/Users/Jean-MathieuPotvin/OneDrive/'OneDrive - Geosapiens'/'Documents - Operations'/Architecture/gs-docs"
