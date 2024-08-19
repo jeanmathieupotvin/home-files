@@ -4,6 +4,11 @@
 # Ignore everything by default.
 /*
 
+# Do not ignore README and LICENSE.
+# They may be deleted after first pull.
+!LICENSE
+!README.md
+
 # Do not ignore some files and folders in .config.
 !/.config
 .config/*
