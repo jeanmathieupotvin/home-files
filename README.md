@@ -27,7 +27,7 @@ sudo chown -R "$USER:$USER" "$SECRETS_DIR"
 ```
 
 The `-R` flag ensures all further subdirectories and files within your secret
-directory (at once).
+directory are updated with their parent directory (at once).
 
 Then, simply execute command `secrets unlock`. It should proceed smoothly.
 
