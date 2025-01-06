@@ -1,8 +1,8 @@
 # ~/.crontab: scheduled tasks via crontab. Executed by cron.
-# Use crontab -e to add tasks below. Use crontab -l to list them.
+# Use (sudo) crontab -e to add tasks below. Use (sudo) crontab -l to list them.
 
-# Backup images and projects to backup drive every day at 15:00.
+# Back up images and projects.
 # Hard drive is automatically mounted to /mnt/d by WSL2.
 # % signs must be escaped in date command.
-0 15 * * * rsync --recursive --verbose "$HOME/images" /mnt/d/backups --log-file="/mnt/d/backups/images/_logs/$(date +"\%Y-\%m-\%d").log"
-0 15 * * * rsync --recursive --verbose --prune-empty-dirs "$HOME/projects" /mnt/d/backups --log-file="/mnt/d/backups/projects/_logs/$(date +"\%Y-\%m-\%d").log"
+0 15 * * * rsync --recursive --verbose "$HOME/images" /mnt/d/backups
+0 11,15 * * * cd "$HOME/projects" && tar -czvf "/mnt/d/backups/projects/$(date +"\%Y-\%m-\%d-\%H-\%M").tar.gz" .
